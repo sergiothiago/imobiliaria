@@ -1,14 +1,22 @@
-# Imobiliaria API RestFul
-Backend da API RESTFUL de uma imobiliaria utilizando Spring e banco de dados mysql. O versionamento do banco de dados é realizado por meio do flyway
-
-# Para utilizar
-
-1 - Baixe o fonte do projeto
-
-2 - Abra o projeto utilizando sua IDE de preferência podendo ser por exemplo, STS.
-
-3 - Crie um banco de dados com o nome imobiliaria e passe suas credenciais no arquivo:
-
- `application.properties`
- 
-4 - Rode a aplicação e todas tabelas e dados de demonstração serão criados por meio do flyway que faz o versionamento do banco de dados.
+# Imobiliaria
+API do sistema de imobiliaria com Java e Spring Boot.
+### Detalhes da API RESTful
+A API RESTful de imobiliária contém as seguintes características:  
+* Projeto criado com Spring Boot e Java 8
+* Banco de dados MySQL com JPA e Spring Data JPA
+* Autenticação e autorização com Spring Security e tokens JWT (JSON Web Token)
+* Migração de banco de dados com Flyway
+* Testes unitários e de integração com JUnit e Mockito
+* Caching com EhCache
+* Integração contínua com TravisCI
+### Como executar a aplicação
+Certifique-se de ter o Maven instalado e adicionado ao PATH de seu sistema operacional, assim como o Git.
+```
+Acesse os endpoints através da url http://localhost:8080
+```
+### Importando o projeto no Eclipse ou STS
+No terminal, execute a seguinte operação:
+```
+mvn eclipse:eclipse
+```
+No Eclipse/STS, importe o projeto como projeto Maven.
