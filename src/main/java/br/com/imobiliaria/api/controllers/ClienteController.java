@@ -23,20 +23,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.imobiliaria.api.dtos.ClienteDTO;
 import br.com.imobiliaria.api.entities.Cliente;
 import br.com.imobiliaria.api.response.Response;
-import br.com.imobiliaria.api.services.ClienteService;
+import br.com.imobiliaria.api.services.impl.ClienteServiceImpl;
 
 @RestController
-@RequestMapping("/api/cliente")
+@RequestMapping("/api/clientes")
 @CrossOrigin(origins = "*")
 public class ClienteController {
 	
 	private static final Logger log = LoggerFactory.getLogger(ClienteController.class);
 
 	@Autowired
-	private ClienteService clienteService;
+	private ClienteServiceImpl clienteServiceImpl;
 	
 	@Value("${paginacao.qtd_por_pagina}")
 	private int qtdPorPagina;
@@ -47,22 +46,20 @@ public class ClienteController {
 	 * @param funcionarioId
 	 * @return ResponseEntity<Response<LancamentoDto>>
 	 */
-	@GetMapping()
-	public ResponseEntity<Response<Page<ClienteDTO>>> listarTodos(
+	@GetMapping
+	public ResponseEntity<Response<Page<Cliente>>> listarTodos(
 		@RequestParam(value = "pag", defaultValue = "0") int pag,
-		@RequestParam(value = "ord", defaultValue = "id") String ord,
+		@RequestParam(value = "ord", defaultValue = "codigo") String ord,
 		@RequestParam(value = "dir", defaultValue = "DESC") String dir) {
 	
 		log.info("Buscando clientes , página: {}", pag);
-		Response<Page<ClienteDTO>> response = new Response<Page<ClienteDTO>>();
+		Response<Page<Cliente>> response = new Response<Page<Cliente>>();
 
 		PageRequest pageRequest = new PageRequest(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
 		
-		Page<Cliente> clientes = this.clienteService.buscarTodos(pageRequest);
-
-		Page<ClienteDTO> clientesDto = clientes.map(cli -> this.converterClienteParaDTO(cli));
+		Page<Cliente> clientes = this.clienteServiceImpl.buscarTodos(pageRequest);
 		
-		response.setData(clientesDto);
+		response.setData(clientes);
 		return ResponseEntity.ok(response);
 	}
 	
@@ -75,14 +72,12 @@ public class ClienteController {
 	 * @throws NoSuchAlgorithmException
 	 */
 	@PostMapping
-	public ResponseEntity<Response<ClienteDTO>> cadastrar(@Valid @RequestBody ClienteDTO cadastroClienteDTO,
+	public ResponseEntity<Response<Cliente>> cadastrar(@Valid @RequestBody Cliente cliente,
 			BindingResult result) throws NoSuchAlgorithmException {
-		log.info("Cadastrando Cliente: {}", cadastroClienteDTO.toString());
-		Response<ClienteDTO> response = new Response<ClienteDTO>();
+		log.info("Cadastrando Cliente: {}", cliente.toString());
+		Response<Cliente> response = new Response<Cliente>();
 
-		validarDadosExistentes(cadastroClienteDTO, result);
-		
-		Cliente cliente = this.converterDtoParaCliente(cadastroClienteDTO, result);
+		validarDadosExistentes(cliente, result);
 
 		if (result.hasErrors()) {
 			log.error("Erro validando dados de cadastro cliente: {}", result.getAllErrors());
@@ -90,43 +85,11 @@ public class ClienteController {
 			return ResponseEntity.badRequest().body(response);
 		}
 
-		this.clienteService.persistir(cliente);	
-
-		response.setData(this.converterClienteParaDTO(cliente, result));
+		this.clienteServiceImpl.persistir(cliente);	
+		
+		response.setData(cliente);
 		return ResponseEntity.ok(response);
 	}
-	
-	private Cliente converterDtoParaCliente(ClienteDTO cadastroClienteDTO,BindingResult result )
-			throws NoSuchAlgorithmException {
-		
-		Cliente cliente = new Cliente();
-		cliente.setNome(cadastroClienteDTO.getNome());
-		cliente.setEmail(cadastroClienteDTO.getEmail());
-		cliente.setSenha(cadastroClienteDTO.getSenha());
-		
-		return cliente;
-	}
-	
-	private ClienteDTO converterClienteParaDTO(Cliente cliente ,BindingResult result )
-			throws NoSuchAlgorithmException {
-		
-		ClienteDTO cadastroClienteDTO = new ClienteDTO();
-		cadastroClienteDTO.setEmail(cliente.getEmail());
-		cadastroClienteDTO.setId(cliente.getCodigo());
-		cadastroClienteDTO.setNome(cliente.getNome());
-		
-		return cadastroClienteDTO;
-	}
-	
-	private ClienteDTO converterClienteParaDTO(Cliente cliente) {
-		ClienteDTO cadastroClienteDTO = new ClienteDTO();
-		cadastroClienteDTO.setEmail(cliente.getEmail());
-		cadastroClienteDTO.setId(cliente.getCodigo());
-		cadastroClienteDTO.setNome(cliente.getNome());
-		
-		return cadastroClienteDTO;
-	}
-	
 	
 	/**
 	 * Verifica se o cliente já está cadastrado na base de dados.
@@ -134,17 +97,15 @@ public class ClienteController {
 	 * @param cadastroPFDto
 	 * @param result
 	 */
-	private void validarDadosExistentes(ClienteDTO cadastroClienteDTO, BindingResult result) {
-		Optional<Cliente> cliente = this.clienteService.buscarPorEmail(cadastroClienteDTO.getEmail());
-		
-		if (!cliente.isPresent()) {
-			result.addError(new ObjectError("cliente", "Cliente não cadastrado."));
+	private void validarDadosExistentes(Cliente cliente, BindingResult result) {
+		Optional<Cliente> clienteValidado = this.clienteServiceImpl.buscarPorEmail(cliente.getEmail());
+
+		if (clienteValidado.isPresent()) {
+			result.addError(new ObjectError("cliente", "Cliente já cadastrado cadastrado."));
 		}
 
-		this.clienteService.buscarPorEmail(cadastroClienteDTO.getEmail())
+		this.clienteServiceImpl.buscarPorEmail(cliente.getEmail())
 			.ifPresent(cli -> result.addError(new ObjectError("cliente", "email de cliente já existente")));
 	}
-	
-	
-	
+
 }

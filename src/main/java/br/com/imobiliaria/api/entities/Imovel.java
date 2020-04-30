@@ -19,6 +19,7 @@ import javax.persistence.Table;
 
 import br.com.imobiliaria.api.enums.EspecificacaoEnum;
 import br.com.imobiliaria.api.enums.StatusEnum;
+import br.com.imobiliaria.api.enums.TipoImovelEnum;
 
 @Entity
 @Table(name = "imovel")
@@ -53,6 +54,10 @@ public class Imovel implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status_imovel", nullable = false)
 	private StatusEnum status;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "tipo_imovel", nullable = false)
+	private TipoImovelEnum tipo;
 	
 	@Column(name = "cep_imovel", nullable = false)
 	private String cep;
@@ -241,5 +246,25 @@ public class Imovel implements Serializable {
 		this.dataAtualizacao = dataAtualizacao;
 	}
 
+	/**
+	 * @return the tipo
+	 */
+	public TipoImovelEnum getTipo() {
+		return tipo;
+	}
+
+	/**
+	 * @param tipo the tipo to set
+	 */
+	public void setTipo(TipoImovelEnum tipo) {
+		this.tipo = tipo;
+	}
+
+	/**
+	 * @return the serialversionuid
+	 */
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 }

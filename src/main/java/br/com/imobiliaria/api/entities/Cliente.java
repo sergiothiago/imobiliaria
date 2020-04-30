@@ -138,4 +138,15 @@ public class Cliente implements Serializable {
 		this.imoveis = imoveis;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Cliente [codigo=" + codigo + ", nome=" + nome + ", email=" + email + ", senha=" + senha
+				+ ", dataCriacao=" + dataCriacao + ", dataAtualizacao=" + dataAtualizacao + ", perfil=" + perfil
+				+ ", imoveis=" + imoveis + "]";
+	}
+
+	
 }

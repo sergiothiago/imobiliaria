@@ -66,9 +66,12 @@ CREATE TABLE `imovel` (
   `bairro_imovel` varchar(255) NOT NULL,
   `cidade_imovel` varchar(255) NOT NULL,
   `area_imovel` varchar(255) NOT NULL,
-  `destaque_imovel` tinyint(255) NOT NULL,
-  `data_atualizacao` datetime NOT NULL,
-  `data_criacao` datetime NOT NULL
+  `destaque_imovel` tinyint(1) NOT NULL,
+  `status_imovel` varchar(255) NOT NULL,
+  `especificacao_imovel` varchar(255) NOT NULL,
+  `tipo_imovel` varchar(255) NOT NULL,
+  `data_atualizacao_imovel` datetime NOT NULL,
+  `data_criacao_imovel` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `galpao` (
@@ -86,11 +89,11 @@ CREATE TABLE `casa` (
 
 CREATE TABLE `apartamento` (
   `codigo_imovel` bigint(20) NOT NULL,
-  `quantidade_quartos_casa` bigint(20) NOT NULL,
-  `quantidade_salas_casa` bigint(20) NOT NULL,
-  `quantidade_cozinhas_casa` bigint(20) NOT NULL,
-  `quantidade_banheiros_casa` bigint(20) NOT NULL,
-  `quantidade_garagens_casa` bigint(20) NOT NULL,
+  `quantidade_quartos_apartamento` bigint(20) NOT NULL,
+  `quantidade_salas_apartamento` bigint(20) NOT NULL,
+  `quantidade_cozinhas_apartamento` bigint(20) NOT NULL,
+  `quantidade_banheiros_apartamento` bigint(20) NOT NULL,
+  `quantidade_garagens_apartamento` bigint(20) NOT NULL,
   `preco_condominio_apartamento` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
