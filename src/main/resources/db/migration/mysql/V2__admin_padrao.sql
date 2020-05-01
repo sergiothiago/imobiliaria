@@ -1,11 +1,8 @@
-INSERT INTO `empresa` (`id`, `cnpj`, `data_atualizacao`, `data_criacao`, `razao_social`) 
-VALUES (NULL, '82198127000121', CURRENT_DATE(), CURRENT_DATE(), 'Kazale IT');
-
-INSERT INTO `funcionario` (`id`, `cpf`, `data_atualizacao`, `data_criacao`, `email`, `nome`, 
-`perfil`, `qtd_horas_almoco`, `qtd_horas_trabalho_dia`, `senha`, `valor_hora`, `empresa_id`) 
-VALUES (NULL, '16248890935', CURRENT_DATE(), CURRENT_DATE(), 'admin@kazale.com', 'ADMIN', 'ROLE_ADMIN', NULL, NULL, 
-'$2a$06$xIvBeNRfS65L1N17I7JzgefzxEuLAL0Xk0wFAgIkoNqu9WD6rmp4m', NULL, 
-(SELECT `id` FROM `empresa` WHERE `cnpj` = '82198127000121'));
+INSERT INTO `administrador` (`codigo_administrador`, `nome_administrador`,
+`email_administrador`, `senha_administrador`, `perfil_administrador`,
+`data_atualizacao_administrador`, `data_criacao_administrador`)
+VALUES (NULL, 'Sérgio Mendonça', 'admin@imobiliaria.com.br',
+'$2a$06$xIvBeNRfS65L1N17I7JzgefzxEuLAL0Xk0wFAgIkoNqu9WD6rmp4m', 'ROLE_ADMIN', '2020-04-01 00:00:00', '2020-04-01 00:00:00');
 
 INSERT INTO `imovel` (`codigo_imovel`, `referencia_imovel`, `titulo_imovel`, `corretor_imovel`,
 `proprietario_imovel`, `descricao_imovel`, `preco_imovel`, `cep_imovel`, `numero_imovel`,
@@ -46,20 +43,13 @@ INSERT INTO `galpao` (`codigo_imovel`) VALUES ('3');
 INSERT INTO `cliente` (`codigo_cliente`, `nome_cliente`,
 `email_cliente`, `senha_cliente`, `perfil_cliente`,
 `data_atualizacao_cliente`, `data_criacao_cliente`)
-VALUES (NULL, 'João', 'joao@gmail.com', '123', 'ROLE_CLIENTE',
+VALUES (NULL, 'João', 'joao@gmail.com', '$2a$06$xIvBeNRfS65L1N17I7JzgefzxEuLAL0Xk0wFAgIkoNqu9WD6rmp4m', 'ROLE_CLIENTE',
 '2020-04-01 00:00:00', '2020-04-01 00:00:00');
 
 INSERT INTO `cliente` (`codigo_cliente`, `nome_cliente`,
 `email_cliente`, `senha_cliente`, `perfil_cliente`,
 `data_atualizacao_cliente`, `data_criacao_cliente`)
-VALUES (NULL, 'Cassio', 'cassio@gmail.com', '123', 'ROLE_CLIENTE',
+VALUES (NULL, 'Cassio', 'cassio@gmail.com', '$2a$06$xIvBeNRfS65L1N17I7JzgefzxEuLAL0Xk0wFAgIkoNqu9WD6rmp4m', 'ROLE_CLIENTE',
 '2020-04-01 00:00:00', '2020-04-01 00:00:00');
-
-INSERT INTO `administrador` (`codigo_administrador`, `nome_administrador`,
-`email_administrador`, `senha_administrador`, `perfil_administrador`,
-`data_atualizacao_administrador`, `data_criacao_administrador`)
-VALUES (NULL, 'sergio takashi', 'sergiothiagovrb@gmail.com',
-'123', 'ROLE_ADMIN', '2020-04-01 00:00:00', '2020-04-01 00:00:00');
-
 
 INSERT INTO `favorito_imovel_cliente` (`codigo_imovel`, `codigo_cliente`) VALUES ('1', '1'), ('2', '1');

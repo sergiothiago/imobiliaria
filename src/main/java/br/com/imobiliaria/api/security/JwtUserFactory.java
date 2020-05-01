@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import br.com.imobiliaria.api.entities.Funcionario;
+import br.com.imobiliaria.api.entities.Administrador;
 import br.com.imobiliaria.api.enums.PerfilEnum;
 
 public class JwtUserFactory {
@@ -15,14 +15,14 @@ public class JwtUserFactory {
 	}
 
 	/**
-	 * Converte e gera um JwtUser com base nos dados de um funcionário.
+	 * Converte e gera um JwtUser com base nos dados de um administrador.
 	 * 
-	 * @param funcionario
+	 * @param administrador
 	 * @return JwtUser
 	 */
-	public static JwtUser create(Funcionario funcionario) {
-		return new JwtUser(funcionario.getId(), funcionario.getEmail(), funcionario.getSenha(),
-				mapToGrantedAuthorities(funcionario.getPerfil()));
+	public static JwtUser create(Administrador administrador) {
+		return new JwtUser(administrador.getCodigo(), administrador.getEmail(), administrador.getSenha(),
+				mapToGrantedAuthorities(administrador.getPerfil()));
 	}
 
 	/**

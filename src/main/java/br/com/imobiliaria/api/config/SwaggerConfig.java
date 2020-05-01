@@ -47,7 +47,7 @@ public class SwaggerConfig {
 	public SecurityConfiguration security() {
 		String token;
 		try {
-			UserDetails userDetails = this.userDetailsService.loadUserByUsername("admin@kazale.com");
+			UserDetails userDetails = this.userDetailsService.loadUserByUsername("admin@imobiliaria.com.br");
 			token = this.jwtTokenUtil.obterToken(userDetails);
 		} catch (Exception e) {
 			token = "";
