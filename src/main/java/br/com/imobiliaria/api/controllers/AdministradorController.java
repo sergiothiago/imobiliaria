@@ -13,11 +13,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,10 +31,12 @@ import br.com.imobiliaria.api.entities.Administrador;
 import br.com.imobiliaria.api.response.Response;
 import br.com.imobiliaria.api.services.impl.AdministradorServiceImpl;
 import br.com.imobiliaria.api.utils.PasswordUtils;
+import io.swagger.annotations.Api;
 
 @RestController
 @RequestMapping("/api/administradores")
 @CrossOrigin(origins = "*")
+@Api(value = "Administrador", description = "API REST para administradores", tags = { "Administrador" })
 public class AdministradorController {
 	
 	private static final Logger log = LoggerFactory.getLogger(AdministradorController.class);
@@ -43,10 +49,34 @@ public class AdministradorController {
 	private int qtdPorPagina;
 	
 	/**
-	 * Retorna a listagem de lançamentos de um funcionário.
+	 * Retorna um administrador a partir do codigo
 	 * 
-	 * @param funcionarioId
-	 * @return ResponseEntity<Response<LancamentoDto>>
+	 * @param codigo
+	 * @return ResponseEntity<Response<Administrador>>
+	 */
+	@GetMapping(value = "codigo/{codigo}")
+	public ResponseEntity<Response<Administrador>> buscarPorCodigo(@PathVariable("codigo") Long codigo){
+	
+		log.info("Buscando cliente por codigo");
+		Response<Administrador> response = new Response<Administrador>();
+
+		Optional<Administrador> administrador = this.administradorServiceImpl.buscarPorCodigo(codigo);
+
+		if (!administrador.isPresent()) {
+			log.info("Erro ao buscar devido ao administrador ID: {} ser inválido.", codigo);
+			response.getErrors().add("Erro ao buscar administrador. Registro não encontrado para o id " + codigo);
+			return ResponseEntity.badRequest().body(response);
+		}
+	
+		response.setData(administrador.get());
+		return ResponseEntity.ok(response);
+	}
+	
+	/**
+	 * Retorna a listagem de administradores
+	 * 
+	 * @param pag, ord, dir.
+	 * @return ResponseEntity<Response<Page<Administrador>>>
 	 */
 	@GetMapping
 	public ResponseEntity<Response<Page<Administrador>>> listarTodos(
@@ -113,7 +143,7 @@ public class AdministradorController {
 	}
 
 	/**
-	 * Atualiza os dados de um funcionário.
+	 * Atualiza os dados de um administrador.
 	 * 
 	 * @param id
 	 * @param funcionarioDto
@@ -121,48 +151,62 @@ public class AdministradorController {
 	 * @return ResponseEntity<Response<FuncionarioDto>>
 	 * @throws NoSuchAlgorithmException
 	 */
-//	@PutMapping(value = "/{id}")
-//	public ResponseEntity<Response<Administrador>> atualizar(@PathVariable("id") Long id,
-//			@Valid @RequestBody Administrador administrador, BindingResult result) throws NoSuchAlgorithmException {
-//		log.info("Atualizando administrador: {}", administrador.toString());
-//		Response<Administrador> response = new Response<Administrador>();
-//
-//		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(id);
-//		if (!funcionario.isPresent()) {
-//			result.addError(new ObjectError("funcionario", "Funcionário não encontrado."));
-//		}
-//
-//		this.atualizarDadosFuncionario(funcionario.get(), funcionarioDto, result);
-//
-//		if (result.hasErrors()) {
-//			log.error("Erro validando funcionário: {}", result.getAllErrors());
-//			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
-//			return ResponseEntity.badRequest().body(response);
-//		}
-//
-//		this.administradorServiceImpl.persistir(funcionario.get());
-//
-//		return ResponseEntity.ok(response);
-//	}
+	@PutMapping(value = "/{codigo}")
+	public ResponseEntity<Response<Administrador>> atualizar(@PathVariable("codigo") Long codigo,
+			@Valid @RequestBody Administrador administrador, BindingResult result) throws NoSuchAlgorithmException {
+		log.info("Atualizando administrador: {}", administrador.toString());
+		Response<Administrador> response = new Response<Administrador>();
 
-	/**
-	 * Atualiza os dados do funcionário com base nos dados encontrados no DTO.
-	 * 
-	 * @param funcionario
-	 * @param funcionarioDto
-	 * @param result
-	 * @throws NoSuchAlgorithmException
-	 */
-	private void atualizarDadosFuncionario(Administrador administrador, BindingResult result)
-			throws NoSuchAlgorithmException {
-
-			this.administradorServiceImpl.buscarPorEmail(administrador.getEmail())
-					.ifPresent(func -> result.addError(new ObjectError("email", "Email já existente.")));
-
+		Optional<Administrador> admin = this.administradorServiceImpl.buscarPorCodigo(codigo);
+		if (!admin.isPresent()) {
+			result.addError(new ObjectError("administrador", "Administrador não encontrado."));
+		}
+		
+		administrador.setPerfil(admin.get().getPerfil());
+		administrador.setCodigo(admin.get().getCodigo());
+		administrador.setDataCriacao(admin.get().getDataCriacao());
+		
+		if(!admin.get().getEmail().isEmpty()) administrador.setEmail(admin.get().getEmail().toString());
+		
 		if (!administrador.getSenha().isEmpty()) {
 			administrador.setSenha(PasswordUtils.gerarBCrypt(administrador.getSenha()));
 		}
+
+		if (result.hasErrors()) {
+			log.error("Erro validando administrador: {}", result.getAllErrors());
+			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
+			return ResponseEntity.badRequest().body(response);
+		}
+		
+		response.setData(administrador);
+		this.administradorServiceImpl.persistir(administrador);
+
+		return ResponseEntity.ok(response);
 	}
 	
-	
+	/**
+	 * Remove um administrador por ID.
+	 * 
+	 * @param id
+	 * @return ResponseEntity<Response<String>>
+	 */
+	@DeleteMapping(value = "/{codigo}")
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Response<String>> remover(@PathVariable("codigo") Long codigo) {
+		log.info("Removendo lançamento: {}", codigo);
+		Response<String> response = new Response<String>();
+		Optional<Administrador> administrador = this.administradorServiceImpl.buscarPorCodigo(codigo);
+
+		if (!administrador.isPresent()) {
+			log.info("Erro ao remover devido ao administrador ID: {} ser inválido.", codigo);
+			response.getErrors().add("Erro ao remover administrador. Registro não encontrado para o id " + codigo);
+			return ResponseEntity.badRequest().body(response);
+		}
+		
+		response.setData("Administrador removido com Sucesso!");
+		this.administradorServiceImpl.remover(codigo);
+		return ResponseEntity.ok(response);
+	}
+
+
 }

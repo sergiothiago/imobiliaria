@@ -45,4 +45,16 @@ public class AdministradorServiceImpl implements AdministradorService{
 		return this.administradorRepository.save(administrador);
 	}
 
+	@Override
+	public Optional<Administrador> buscarPorCodigo(Long codigo) {
+		log.info("Buscando administrador pelo IDl {}", codigo);
+		return Optional.ofNullable(this.administradorRepository.findOne(codigo));
+	}
+
+	@Override
+	public void remover(Long id) {
+		log.info("Removendo o administrador ID {}", id);
+		this.administradorRepository.delete(id);
+	}
+
 }

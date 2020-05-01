@@ -16,4 +16,5 @@ public interface AdministradorRepository extends JpaRepository<Administrador, Lo
 	Page<Administrador> findByNome(@Param("nome") String nome, Pageable pageable);
 
 	Optional<Administrador> findByEmail(@Param("email") String email);
+	
 }
