@@ -1,8 +1,11 @@
 package br.com.imobiliaria.api.services;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import br.com.imobiliaria.api.entities.Cliente;
 import br.com.imobiliaria.api.entities.Imovel;
 
 public interface ImovelService {
@@ -23,4 +26,12 @@ public interface ImovelService {
 	 */
 	Page<Imovel> buscarTodos(PageRequest pageRequest);
 	
+	/**
+	 * Retorna um imovel dada uma referencia.
+	 * 
+	 * @param codigo
+	 * @return Optional<Imovel>
+	 */
+	Optional<Imovel> buscarPorReferencia(String referencia);
+
 }

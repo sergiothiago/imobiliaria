@@ -45,4 +45,16 @@ public class ClienteServiceImpl implements ClienteService {
 		return this.clienteRepository.save(cliente);
 	}
 
+	@Override
+	public Optional<Cliente> buscarPorCodigo(Long codigo) {
+		log.info("Buscando cliente pelo IDl {}", codigo);
+		return Optional.ofNullable(this.clienteRepository.findOne(codigo));
+	}
+
+	@Override
+	public void remover(Long id) {
+		log.info("Removendo o client ID {}", id);
+		this.clienteRepository.delete(id);
+	}
+
 }

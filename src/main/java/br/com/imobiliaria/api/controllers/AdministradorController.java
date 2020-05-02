@@ -55,6 +55,7 @@ public class AdministradorController {
 	 * @return ResponseEntity<Response<Administrador>>
 	 */
 	@GetMapping(value = "codigo/{codigo}")
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Response<Administrador>> buscarPorCodigo(@PathVariable("codigo") Long codigo){
 	
 		log.info("Buscando cliente por codigo");
@@ -79,6 +80,7 @@ public class AdministradorController {
 	 * @return ResponseEntity<Response<Page<Administrador>>>
 	 */
 	@GetMapping
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Response<Page<Administrador>>> listarTodos(
 		@RequestParam(value = "pag", defaultValue = "0") int pag,
 		@RequestParam(value = "ord", defaultValue = "codigo") String ord,
@@ -104,6 +106,7 @@ public class AdministradorController {
 	 * @throws NoSuchAlgorithmException
 	 */
 	@PostMapping
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Response<Administrador>> cadastrar(@Valid @RequestBody Administrador administrador,
 			BindingResult result) throws NoSuchAlgorithmException {
 		log.info("Cadastrando Cliente: {}", administrador.toString());
@@ -152,6 +155,7 @@ public class AdministradorController {
 	 * @throws NoSuchAlgorithmException
 	 */
 	@PutMapping(value = "/{codigo}")
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Response<Administrador>> atualizar(@PathVariable("codigo") Long codigo,
 			@Valid @RequestBody Administrador administrador, BindingResult result) throws NoSuchAlgorithmException {
 		log.info("Atualizando administrador: {}", administrador.toString());
@@ -193,7 +197,7 @@ public class AdministradorController {
 	@DeleteMapping(value = "/{codigo}")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Response<String>> remover(@PathVariable("codigo") Long codigo) {
-		log.info("Removendo lançamento: {}", codigo);
+		log.info("Removendo administrador: {}", codigo);
 		Response<String> response = new Response<String>();
 		Optional<Administrador> administrador = this.administradorServiceImpl.buscarPorCodigo(codigo);
 

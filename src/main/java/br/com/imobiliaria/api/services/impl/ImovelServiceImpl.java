@@ -1,5 +1,7 @@
 package br.com.imobiliaria.api.services.impl;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,12 @@ public class ImovelServiceImpl implements ImovelService{
 	public Page<Imovel> buscarTodos(PageRequest pageRequest) {
 		log.info("Buscando imovel");
 		return this.imovelRepository.findAll(pageRequest);
+	}
+
+	@Override
+	public Optional<Imovel> buscarPorReferencia(String referencia) {
+		log.info("Buscando imovel por referencia {}", referencia);
+		return this.imovelRepository.findByReferencia(referencia);
 	}
 
 }

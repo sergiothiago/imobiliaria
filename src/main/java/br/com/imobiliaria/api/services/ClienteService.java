@@ -10,6 +10,14 @@ import br.com.imobiliaria.api.entities.Cliente;
 public interface ClienteService {
 
 	/**
+	 * Retorna um cliente dado um codigo.
+	 * 
+	 * @param codigo
+	 * @return Optional<Cliente>
+	 */
+	Optional<Cliente> buscarPorCodigo(Long codigo);
+	
+	/**
 	 * Retorna um cliente dado um Email.
 	 * 
 	 * @param email
@@ -43,5 +51,12 @@ public interface ClienteService {
 	 * @return Cliente
 	 */
 	Cliente persistir(Cliente cliente);
+	
+	/**
+	 * Remove um cliente da base de dados.
+	 * 
+	 * @param id
+	 */
+	void remover(Long id);
 	
 }
