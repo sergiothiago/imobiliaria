@@ -1,21 +1,19 @@
+CREATE TABLE `pessoa` (
+  `codigo_pessoa` bigint(20) NOT NULL,
+  `nome_pessoa` varchar(255) NOT NULL,
+  `email_pessoa` varchar(255) NOT NULL,
+  `senha_pessoa` varchar(255) NOT NULL,
+  `perfil_pessoa` varchar(255) NOT NULL,
+  `data_atualizacao_pessoa` datetime NOT NULL,
+  `data_criacao_pessoa` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `administrador` (
-  `codigo_administrador` bigint(20) NOT NULL,
-  `nome_administrador` varchar(255) NOT NULL,
-  `email_administrador` varchar(255) NOT NULL,
-  `senha_administrador` varchar(255) NOT NULL,
-  `perfil_administrador` varchar(255) NOT NULL,
-  `data_atualizacao_administrador` datetime NOT NULL,
-  `data_criacao_administrador` datetime NOT NULL
+  `codigo_pessoa` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `cliente` (
-  `codigo_cliente` bigint(20) NOT NULL,
-  `nome_cliente` varchar(255) NOT NULL,
-  `email_cliente` varchar(255) NOT NULL,
-  `senha_cliente` varchar(255) NOT NULL,
-  `perfil_cliente` varchar(255) NOT NULL,
-  `data_atualizacao_cliente` datetime NOT NULL,
-  `data_criacao_cliente` datetime NOT NULL
+  `codigo_pessoa` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `imovel` (
@@ -70,15 +68,15 @@ CREATE TABLE `terreno` (
 
 CREATE TABLE `favorito_imovel_cliente` (
   `codigo_imovel` bigint(20) NOT NULL,
-  `codigo_cliente` bigint(20) NOT NULL
+  `codigo_pessoa` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Indexes for table `administrador`
+-- Indexes for table `pessoa`
 --
 
 ALTER TABLE `favorito_imovel_cliente`
-  ADD PRIMARY KEY (`codigo_imovel`, `codigo_cliente`);
+  ADD PRIMARY KEY (`codigo_imovel`, `codigo_pessoa`);
 
 --
 -- Indexes for table `imovel`
@@ -100,27 +98,23 @@ ALTER TABLE `terreno`
   ADD PRIMARY KEY (`codigo_imovel`);
 
 --
--- Indexes for table `administrador`
---
+
+ALTER TABLE `pessoa`
+  ADD PRIMARY KEY (`codigo_pessoa`);
 
 ALTER TABLE `administrador`
-  ADD PRIMARY KEY (`codigo_administrador`);
-
---
--- Indexes for table `cliente`
---
+  ADD PRIMARY KEY (`codigo_pessoa`);
 
 ALTER TABLE `cliente`
-  ADD PRIMARY KEY (`codigo_cliente`);
+  ADD PRIMARY KEY (`codigo_pessoa`);
 
--- Indexes for table `casa`
 --
 
 ALTER TABLE `favorito_imovel_cliente`
   ADD KEY `FK4cm1kg523jlopyexjbmi6y54b` (`codigo_imovel`);
 
 ALTER TABLE `favorito_imovel_cliente`
-  ADD KEY `FK4cm1kg523jlopyexjbmi6y54a` (`codigo_cliente`);
+  ADD KEY `FK4cm1kg523jlopyexjbmi6y54a` (`codigo_pessoa`);
 
 ALTER TABLE `casa`
   ADD KEY `FK4cm1kg523jlopyexjbmi6y53a` (`codigo_imovel`);
@@ -134,6 +128,13 @@ ALTER TABLE `galpao`
 ALTER TABLE `terreno`
   ADD KEY `FK4cm1kg523jlopyexjbmi6y53d` (`codigo_imovel`);
 
+
+ALTER TABLE `administrador`
+  ADD KEY `FK4cm1kg523jlopyexttmi6y54a` (`codigo_pessoa`);
+
+ALTER TABLE `cliente`
+  ADD KEY `FK4cm1kg523jlopyzajbmi6y54a` (`codigo_pessoa`);
+
 --
 -- AUTO_INCREMENT for table `imovel`
 --
@@ -143,14 +144,9 @@ ALTER TABLE `imovel`
 --
 -- Constraints for dumped tables
 --
-ALTER TABLE `cliente`
-  MODIFY `codigo_cliente` bigint(20) NOT NULL AUTO_INCREMENT;
 
---
--- Constraints for dumped tables
---
-ALTER TABLE `administrador`
-  MODIFY `codigo_administrador` bigint(20) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `pessoa`
+  MODIFY `codigo_pessoa` bigint(20) NOT NULL AUTO_INCREMENT;
 
 -- Constraints for table `imoveis`
 
@@ -170,4 +166,10 @@ ALTER TABLE `favorito_imovel_cliente`
   ADD CONSTRAINT `FK4cm1kg523jlopyexjbmi6y54b` FOREIGN KEY (`codigo_imovel`) REFERENCES `imovel` (`codigo_imovel`);
 
 ALTER TABLE `favorito_imovel_cliente`
-  ADD CONSTRAINT `FK4cm1kg523jlopyexjbmi6y54a` FOREIGN KEY (`codigo_cliente`) REFERENCES `cliente` (`codigo_cliente`);
+  ADD CONSTRAINT `FK4cm1kg523jlopyexjbmi6y54a` FOREIGN KEY (`codigo_pessoa`) REFERENCES `cliente` (`codigo_pessoa`);
+
+ALTER TABLE `administrador`
+  ADD CONSTRAINT `FK4cm1kg523jlopyexttmi6y54a` FOREIGN KEY (`codigo_pessoa`) REFERENCES `pessoa` (`codigo_pessoa`);
+
+  ALTER TABLE `cliente`
+  ADD CONSTRAINT `FK4cm1kg523jlopyzajbmi6y54a` FOREIGN KEY (`codigo_pessoa`) REFERENCES `pessoa` (`codigo_pessoa`);

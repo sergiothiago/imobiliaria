@@ -1,5 +1,5 @@
 package br.com.imobiliaria.api.services;
-
+ 
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -7,8 +7,8 @@ import org.springframework.data.domain.PageRequest;
 
 import br.com.imobiliaria.api.entities.Cliente;
 
-public interface ClienteService {
-
+ public interface ClienteService {
+ 
 	/**
 	 * Retorna um cliente dado um codigo.
 	 * 

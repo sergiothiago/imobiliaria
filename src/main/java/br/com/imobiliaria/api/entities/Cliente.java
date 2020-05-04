@@ -5,72 +5,38 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import br.com.imobiliaria.api.enums.PerfilEnum;
 
 @Entity
 @Table(name = "cliente")
-public class Cliente implements Serializable {
+@PrimaryKeyJoinColumn(name = "codigo_pessoa")
+public class Cliente extends Pessoa implements Serializable {
 	
 	private static final long serialVersionUID = -5754246207015712518L;
 	
-	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="codigo_cliente")
-	private Long codigo;
-	
-	@NotEmpty(message = "Nome não pode ser vazio.")
-	@Length(min = 3, max = 200, message = "Nome deve conter entre 3 e 200 caracteres.")
-	@Column(name = "nome_cliente", nullable = false)
-	private String nome;
-	
-	@NotEmpty(message = "Email não pode ser vazio.")
-	@Length(min = 5, max = 200, message = "Email deve conter entre 5 e 200 caracteres.")
-	@Column(name = "email_cliente", nullable = false)
-	private String email;
-	
-	@NotEmpty(message = "senha não pode ser vazia.")
-	@Length(min = 3, max = 200, message = "Senha deve conter entre 3 e 200 caracteres.")
-	@Column(name = "senha_cliente", nullable = false)
-	private String senha;
-	
-	@Column(name = "data_criacao_cliente", nullable = false)
-	private Date dataCriacao;
-	
-	@Column(name = "data_atualizacao_cliente", nullable = false)
-	private Date dataAtualizacao;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "perfil_cliente", nullable = false)
-	private PerfilEnum perfil;
-	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "favorito_imovel_cliente",
-	joinColumns = @JoinColumn(name = "codigo_cliente"),
+	joinColumns = @JoinColumn(name = "codigo_pessoa"),
 	inverseJoinColumns = @JoinColumn(name = "codigo_imovel"))
 	private Set<Imovel> imoveis = new HashSet<>();
+
+	
 	
 	@PreUpdate
     public void preUpdate() {
         dataAtualizacao = new Date();
     }
-     
+
     @PrePersist
     public void prePersist() {
         final Date atual = new Date();
@@ -79,83 +45,25 @@ public class Cliente implements Serializable {
         perfil = PerfilEnum.ROLE_CLIENTE;
     }
 
-	public Long getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(Long codigo) {
-		this.codigo = codigo;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
-	public Date getDataCriacao() {
-		return dataCriacao;
-	}
-
-	public void setDataCriacao(Date dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
-
-	public Date getDataAtualizacao() {
-		return dataAtualizacao;
-	}
-
-	public void setDataAtualizacao(Date dataAtualizacao) {
-		this.dataAtualizacao = dataAtualizacao;
-	}
-
-	public PerfilEnum getPerfil() {
-		return perfil;
-	}
-
-	public void setPerfil(PerfilEnum perfil) {
-		this.perfil = perfil;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
+	/**
+	 * @return the imoveis
+	 */
 	public Set<Imovel> getImoveis() {
 		return imoveis;
 	}
 
+	/**
+	 * @param imoveis the imoveis to set
+	 */
 	public void setImoveis(Set<Imovel> imoveis) {
 		this.imoveis = imoveis;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * @return the serialversionuid
 	 */
-	@Override
-	public String toString() {
-		return "Cliente [codigo=" + codigo + ", nome=" + nome + ", email=" + email + ", senha=" + senha
-				+ ", dataCriacao=" + dataCriacao + ", dataAtualizacao=" + dataAtualizacao + ", perfil=" + perfil
-				+ ", imoveis=" + imoveis + "]";
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
-
 	
 }

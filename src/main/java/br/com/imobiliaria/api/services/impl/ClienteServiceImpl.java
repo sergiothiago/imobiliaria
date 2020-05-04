@@ -1,5 +1,5 @@
 package br.com.imobiliaria.api.services.impl;
-
+ 
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -56,5 +56,4 @@ public class ClienteServiceImpl implements ClienteService {
 		log.info("Removendo o client ID {}", id);
 		this.clienteRepository.delete(id);
 	}
-
 }

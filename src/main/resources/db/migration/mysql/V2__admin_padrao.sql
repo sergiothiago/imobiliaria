@@ -1,8 +1,20 @@
-INSERT INTO `administrador` (`codigo_administrador`, `nome_administrador`,
-`email_administrador`, `senha_administrador`, `perfil_administrador`,
-`data_atualizacao_administrador`, `data_criacao_administrador`)
-VALUES (NULL, 'Sérgio Mendonça', 'admin@imobiliaria.com.br',
-'$2a$06$xIvBeNRfS65L1N17I7JzgefzxEuLAL0Xk0wFAgIkoNqu9WD6rmp4m', 'ROLE_ADMIN', '2020-04-01 00:00:00', '2020-04-01 00:00:00');
+----- ADMINISTRADOR E CLIENTE
+
+INSERT INTO `pessoa` (`codigo_pessoa`, `nome_pessoa`, `email_pessoa`, `senha_pessoa`,
+`perfil_pessoa`, `data_atualizacao_pessoa`, `data_criacao_pessoa`) 
+VALUES (NULL, 'Sérgio Mendonça', 'admin@imobiliaria.com.br', 
+'$2a$06$xIvBeNRfS65L1N17I7JzgefzxEuLAL0Xk0wFAgIkoNqu9WD6rmp4m', 'ROLE_ADMIN', 
+'2020-05-01 00:00:00', '2020-05-01 00:00:00');
+
+INSERT INTO `administrador` (`codigo_pessoa`) VALUES ('1');
+
+INSERT INTO `pessoa` (`codigo_pessoa`, `nome_pessoa`, `email_pessoa`, `senha_pessoa`,
+`perfil_pessoa`, `data_atualizacao_pessoa`, `data_criacao_pessoa`) 
+VALUES (NULL, 'Marcos Bonifácio', 'bonifacio@gmail.com', '$2a$06$xIvBeNRfS65L1N17I7JzgefzxEuLAL0Xk0wFAgIkoNqu9WD6rmp4m',
+'ROLE_CLIENTE', '2020-05-01 00:00:00', '2020-05-01 00:00:00');
+
+INSERT INTO `cliente` (`codigo_pessoa`) VALUES ('2');
+----- IMOVEL
 
 INSERT INTO `imovel` (`codigo_imovel`, `referencia_imovel`, `titulo_imovel`, `corretor_imovel`,
 `proprietario_imovel`, `descricao_imovel`, `preco_imovel`, `cep_imovel`, `numero_imovel`,
@@ -40,16 +52,4 @@ VALUES (NULL, '9910', 'Galpão produção', 'Magnata Imoveis', 'João Magnata',
 
 INSERT INTO `galpao` (`codigo_imovel`) VALUES ('3');
 
-INSERT INTO `cliente` (`codigo_cliente`, `nome_cliente`,
-`email_cliente`, `senha_cliente`, `perfil_cliente`,
-`data_atualizacao_cliente`, `data_criacao_cliente`)
-VALUES (NULL, 'João', 'joao@gmail.com', '$2a$06$xIvBeNRfS65L1N17I7JzgefzxEuLAL0Xk0wFAgIkoNqu9WD6rmp4m', 'ROLE_CLIENTE',
-'2020-04-01 00:00:00', '2020-04-01 00:00:00');
-
-INSERT INTO `cliente` (`codigo_cliente`, `nome_cliente`,
-`email_cliente`, `senha_cliente`, `perfil_cliente`,
-`data_atualizacao_cliente`, `data_criacao_cliente`)
-VALUES (NULL, 'Cassio', 'cassio@gmail.com', '$2a$06$xIvBeNRfS65L1N17I7JzgefzxEuLAL0Xk0wFAgIkoNqu9WD6rmp4m', 'ROLE_CLIENTE',
-'2020-04-01 00:00:00', '2020-04-01 00:00:00');
-
-INSERT INTO `favorito_imovel_cliente` (`codigo_imovel`, `codigo_cliente`) VALUES ('1', '1'), ('2', '1');
+INSERT INTO `favorito_imovel_cliente` (`codigo_imovel`, `codigo_pessoa`) VALUES ('1', '2'), ('2', '2');

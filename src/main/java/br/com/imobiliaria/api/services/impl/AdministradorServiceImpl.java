@@ -1,5 +1,6 @@
-package br.com.imobiliaria.api.services.impl;
 
+ package br.com.imobiliaria.api.services.impl;
+ 
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -16,7 +17,7 @@ import br.com.imobiliaria.api.services.AdministradorService;
 @Service
 public class AdministradorServiceImpl implements AdministradorService{
 
-	private static final Logger log = LoggerFactory.getLogger(ClienteServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(AdministradorServiceImpl.class);
 	
 	@Autowired
 	private AdministradorRepository administradorRepository;
@@ -58,3 +59,4 @@ public class AdministradorServiceImpl implements AdministradorService{
 	}
 
 }
+
