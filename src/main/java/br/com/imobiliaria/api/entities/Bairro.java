@@ -37,13 +37,13 @@ public class Bairro implements Serializable {
 
 	@JsonBackReference
 	@ManyToOne
-	@JoinColumn(name = "cidade_bairro")
+	@JoinColumn(name = "codigo_cidade_bairro")
 	private Cidade cidade;
 
-	@Column(name = "data_criacao_cidade", nullable = false)
+	@Column(name = "data_criacao_bairro", nullable = false)
 	private Date dataCriacao;
 	
-	@Column(name = "data_atualizacao_cidade", nullable = false)
+	@Column(name = "data_atualizacao_bairro", nullable = false)
 	private Date dataAtualizacao;
 	
 	@PreUpdate

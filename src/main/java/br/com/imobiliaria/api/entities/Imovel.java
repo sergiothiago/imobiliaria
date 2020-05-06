@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -68,11 +70,13 @@ public class Imovel implements Serializable {
 	@Column(name = "rua_imovel", nullable = false)
 	private String rua;
 	
-	@Column(name = "bairro_imovel", nullable = false)
-	private String bairro;
+	@OneToOne
+	@JoinColumn(name = "codigo_bairro_imovel", nullable = false)
+	private Bairro bairro;
 	
-	@Column(name = "cidade_imovel", nullable = false)
-	private String cidade;
+	@OneToOne
+	@JoinColumn(name = "codigo_cidade_imovel", nullable = false)
+	private Cidade cidade;
 	
 	@Column(name = "area_imovel", nullable = false)
 	private Long area;
@@ -182,22 +186,6 @@ public class Imovel implements Serializable {
 		this.numero = numero;
 	}
 
-	public String getBairro() {
-		return bairro;
-	}
-
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
-	}
-
-	public String getCidade() {
-		return cidade;
-	}
-
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
-	}
-
 	public Long getArea() {
 		return area;
 	}
@@ -267,4 +255,32 @@ public class Imovel implements Serializable {
 		return serialVersionUID;
 	}
 
+	/**
+	 * @return the bairro
+	 */
+	public Bairro getBairro() {
+		return bairro;
+	}
+
+	/**
+	 * @param bairro the bairro to set
+	 */
+	public void setBairro(Bairro bairro) {
+		this.bairro = bairro;
+	}
+
+	/**
+	 * @return the cidade
+	 */
+	public Cidade getCidade() {
+		return cidade;
+	}
+
+	/**
+	 * @param cidade the cidade to set
+	 */
+	public void setCidade(Cidade cidade) {
+		this.cidade = cidade;
+	}
+	
 }

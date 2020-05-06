@@ -1,16 +1,14 @@
 package br.com.imobiliaria.api.services;
 
+import java.util.List;
 import java.util.Optional;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 import br.com.imobiliaria.api.entities.Cidade;
 
 public interface CidadeService {
 	
 	/**
-	 * Retorna um administador dado um codigo.
+	 * Retorna uma cidade dado um codigo.
 	 * 
 	 * @param codigo
 	 * @return Optional<Cidade>
@@ -18,23 +16,13 @@ public interface CidadeService {
 	Optional<Cidade> buscarPorCodigo(Long codigo);
 	
 	/**
-	 * Retorna uma lista paginada de cidades
+	 * Retorna uma lista nao paginada de cidades
 	 * 
 	 * @param nome
 	 * @param pageRequest
 	 * @return Page<Cidade>
 	 */
-	Page<Cidade> buscarTodos(PageRequest pageRequest);
-
-	
-	/**
-	 * Retorna uma lista paginada de cidades
-	 * 
-	 * @param nome
-	 * @param pageRequest
-	 * @return Page<Cidade>
-	 */
-	Page<Cidade> buscarPorNome(String nome, PageRequest pageRequest);
+	List<Cidade> buscarTodos();
 	
 	/**
 	 * Cadastra uma nova cidade na base de dados.
@@ -43,4 +31,11 @@ public interface CidadeService {
 	 * @return cidade
 	 */
 	Cidade persistir(Cidade cidade);
+	
+	/**
+	 * Remove uma cidade da base de dados.
+	 * 
+	 * @param id
+	 */
+	void remover(Long id);
 }

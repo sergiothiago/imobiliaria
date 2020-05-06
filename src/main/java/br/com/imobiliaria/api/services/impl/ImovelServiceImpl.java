@@ -39,4 +39,22 @@ public class ImovelServiceImpl implements ImovelService{
 		return this.imovelRepository.findByReferencia(referencia);
 	}
 
+	@Override
+	public Optional<Imovel> buscarPorCodigo(Long codigo) {
+		log.info("Buscando imovel por codigo {}", codigo);
+		return Optional.ofNullable(this.imovelRepository.findOne(codigo));
+	}
+
+	@Override
+	public void remover(Long codigo) {
+		log.info("Removendo imovel por codigo {}", codigo);
+		this.imovelRepository.delete(codigo);
+	}
+
+	@Override
+	public Page<Imovel> buscaSimples(String param, PageRequest pageRequest) {
+		log.info("Busca simples");
+		return this.imovelRepository.buscaSimples(param, pageRequest);
+	}
+
 }

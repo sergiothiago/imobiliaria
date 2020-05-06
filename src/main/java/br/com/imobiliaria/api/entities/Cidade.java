@@ -36,8 +36,9 @@ public class Cidade implements Serializable {
 	@Column(name = "nome_cidade", nullable = false)
 	private String nome;
 
+	// TODO - AO ATUALIZAR BUGA POR CAUSA DO ORPHAN REMOVAL !!
 	@JsonManagedReference
-	@OneToMany(mappedBy = "cidade", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "cidade", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Bairro> bairros;
 
 	@Column(name = "data_criacao_cidade", nullable = false)

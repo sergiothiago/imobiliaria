@@ -16,6 +16,21 @@ CREATE TABLE `cliente` (
   `codigo_pessoa` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `cidade` (
+  `codigo_cidade` bigint(20) NOT NULL,
+  `nome_cidade` varchar(255) NOT NULL,
+  `data_atualizacao_cidade` datetime NOT NULL,
+  `data_criacao_cidade` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `bairro` (
+  `codigo_bairro` bigint(20) NOT NULL,
+  `nome_bairro` varchar(255) NOT NULL,
+  `codigo_cidade_bairro` bigint(20) NOT NULL,
+  `data_atualizacao_bairro` datetime NOT NULL,
+  `data_criacao_bairro` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `imovel` (
   `codigo_imovel` bigint(20) NOT NULL,
   `referencia_imovel` varchar(255) NOT NULL,
@@ -27,8 +42,8 @@ CREATE TABLE `imovel` (
   `cep_imovel` varchar(255) NOT NULL,
   `numero_imovel` varchar(255) NOT NULL,
   `rua_imovel` varchar(255) NOT NULL,
-  `bairro_imovel` varchar(255) NOT NULL,
-  `cidade_imovel` varchar(255) NOT NULL,
+  `codigo_bairro_imovel` bigint(20) NOT NULL,
+  `codigo_cidade_imovel` bigint(20) NOT NULL,
   `area_imovel` varchar(255) NOT NULL,
   `destaque_imovel` tinyint(1) NOT NULL,
   `status_imovel` varchar(255) NOT NULL,
@@ -97,6 +112,12 @@ ALTER TABLE `apartamento`
 ALTER TABLE `terreno`
   ADD PRIMARY KEY (`codigo_imovel`);
 
+ALTER TABLE `cidade`
+  ADD PRIMARY KEY (`codigo_cidade`);
+
+ALTER TABLE `bairro`
+  ADD PRIMARY KEY (`codigo_bairro`);
+
 --
 
 ALTER TABLE `pessoa`
@@ -128,14 +149,21 @@ ALTER TABLE `galpao`
 ALTER TABLE `terreno`
   ADD KEY `FK4cm1kg523jlopyexjbmi6y53d` (`codigo_imovel`);
 
-
 ALTER TABLE `administrador`
   ADD KEY `FK4cm1kg523jlopyexttmi6y54a` (`codigo_pessoa`);
 
 ALTER TABLE `cliente`
   ADD KEY `FK4cm1kg523jlopyzajbmi6y54a` (`codigo_pessoa`);
 
---
+ALTER TABLE `cidade`
+  ADD KEY `FK4cm1kg523654pyexjbmi6y53d` (`codigo_cidade`);
+
+ALTER TABLE `bairro`
+  ADD KEY `FK4cm1kg523jl681exjbmi6y53d` (`codigo_bairro`);
+
+ALTER TABLE `bairro`
+  ADD KEY `FK4cm1kg523jl681exzzmi6y53d` (`codigo_cidade_bairro`);
+
 -- AUTO_INCREMENT for table `imovel`
 --
 ALTER TABLE `imovel`
@@ -147,6 +175,12 @@ ALTER TABLE `imovel`
 
 ALTER TABLE `pessoa`
   MODIFY `codigo_pessoa` bigint(20) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `cidade`
+  MODIFY `codigo_cidade` bigint(20) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `bairro`
+  MODIFY `codigo_bairro` bigint(20) NOT NULL AUTO_INCREMENT;
 
 -- Constraints for table `imoveis`
 
@@ -173,3 +207,12 @@ ALTER TABLE `administrador`
 
   ALTER TABLE `cliente`
   ADD CONSTRAINT `FK4cm1kg523jlopyzajbmi6y54a` FOREIGN KEY (`codigo_pessoa`) REFERENCES `pessoa` (`codigo_pessoa`);
+
+ALTER TABLE `imovel`
+  ADD CONSTRAINT `FK4cm1kg523654pyexjbmi6y53d` FOREIGN KEY (`codigo_cidade_imovel`) REFERENCES `cidade` (`codigo_cidade`);
+
+ALTER TABLE `imovel`
+  ADD CONSTRAINT `FK4cm1kg523jl681exjbmi6y53d` FOREIGN KEY (`codigo_bairro_imovel`) REFERENCES `bairro` (`codigo_bairro`);
+
+ALTER TABLE `bairro`
+  ADD CONSTRAINT `FK4cm1kg523jl681exzzmi6y53d` FOREIGN KEY (`codigo_cidade_bairro`) REFERENCES `cidade` (`codigo_cidade`);
